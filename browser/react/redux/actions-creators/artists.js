@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-import { RECEIVE_ARTISTS, RECEIVE_ARTIST  from '../constants';
+import { RECEIVE_ARTISTS, RECEIVE_ARTIST }  from '../constants';
 
 export function receiveArtists(artists) {
   return { type: RECEIVE_ARTISTS, artists };
