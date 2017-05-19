@@ -5,5 +5,5 @@ import {combineReducers} from 'redux';
 
 export default combineReducers({
   lyrics: lyricsReducer,
-  player: playerReducer
+  player: playerReducer,
 });

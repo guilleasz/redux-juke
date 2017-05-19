@@ -3,7 +3,7 @@ import axios from 'axios';
 import { hashHistory } from 'react-router';
 
 import store from '../redux/store'
-import { playAudio, loadSongs } from '../redux/actions-creators/player';
+import { playAudio, loadSongs, pauseAudio, setProgress } from '../redux/actions-creators/player';
 import initialState from '../initialState';
 import AUDIO from '../audio';
 import Albums from '../components/Albums.js';
@@ -71,8 +71,7 @@ export default class AppContainer extends Component {
   }
 
   pause () {
-    AUDIO.pause();
-    this.setState({ isPlaying: false });
+    store.dispatch(pauseAudio());
   }
 
   load (currentSong, currentSongList) {
@@ -105,7 +104,7 @@ export default class AppContainer extends Component {
   }
 
   setProgress (progress) {
-    this.setState({ progress: progress });
+    store.dispatch(setProgress(progress));
   }
 
   selectAlbum (albumId) {
