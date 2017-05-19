@@ -1,4 +1,4 @@
-import {RECEIVE_ALBUMS} from '../constants';
+import { RECEIVE_ALBUMS, RECEIVE_ALBUM } from '../constants';
 
 
 export default function (state = {albums: [], selectedAlbum: {}}, action){
@@ -6,6 +6,10 @@ export default function (state = {albums: [], selectedAlbum: {}}, action){
   switch(action.type){
     case RECEIVE_ALBUMS:
       resultState.albums = action.albums;
+      break;
+
+    case RECEIVE_ALBUM:
+      resultState.selectedAlbum = action.album;
       break;
 
     default:
