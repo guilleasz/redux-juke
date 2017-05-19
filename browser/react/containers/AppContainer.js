@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { hashHistory } from 'react-router';
 
+import store from '../redux/store'
+import { playAudio } from '../redux/actions-creators/player';
 import initialState from '../initialState';
 import AUDIO from '../audio';
-
 import Albums from '../components/Albums.js';
 import Album from '../components/Album';
 import Sidebar from '../components/Sidebar';
@@ -12,11 +13,12 @@ import Player from '../components/Player';
 
 import { convertAlbum, convertAlbums, convertSong, skip } from '../utils';
 
+
 export default class AppContainer extends Component {
 
   constructor (props) {
     super(props);
-    this.state = initialState;
+    this.state = Object.assign({}, initialState, store.getState().player);
 
     this.toggle = this.toggle.bind(this);
     this.toggleOne = this.toggleOne.bind(this);
@@ -45,6 +47,14 @@ export default class AppContainer extends Component {
       this.next());
     AUDIO.addEventListener('timeupdate', () =>
       this.setProgress(AUDIO.currentTime / AUDIO.duration));
+
+    this.unsubsribe = store.subscribe(() => {
+      this.setState(store.getState().player);
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubsribe();
   }
 
   onLoad (albums, artists, playlists) {
@@ -53,11 +63,11 @@ export default class AppContainer extends Component {
       artists: artists,
       playlists: playlists
     });
+
   }
 
   play () {
-    AUDIO.play();
-    this.setState({ isPlaying: true });
+    store.dispatch(playAudio());
   }
 
   pause () {
