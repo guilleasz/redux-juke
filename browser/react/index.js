@@ -11,6 +11,7 @@ import NewPlaylistContainer from './containers/NewPlaylistContainer';
 import Playlist from './components/Playlist';
 import store from './redux/store';
 import { setLyrics } from './redux/actions-creators/lyrics';
+import LyricsContainer from './containers/LyricsContainer';
 
 ReactDOM.render(
   <Router history={hashHistory}>
@@ -25,6 +26,7 @@ ReactDOM.render(
       <Route path="/new-playlist" component={NewPlaylistContainer} />
       <Route path="playlists/:playlistId" component={Playlist} />
       <IndexRedirect to='/albums' />
+      <Route path = "/lyrics" component={LyricsContainer} />
     </Route>
   </Router>,
   document.getElementById('app')
