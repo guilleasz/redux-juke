@@ -4,6 +4,7 @@ import { hashHistory } from 'react-router';
 
 import store from '../redux/store'
 import { playAudio, loadSongs, pauseAudio, setProgress } from '../redux/actions-creators/player';
+import {fetchAlbums} from '../redux/actions-creators/albums';
 import initialState from '../initialState';
 import AUDIO from '../audio';
 import Albums from '../components/Albums.js';
@@ -18,7 +19,8 @@ export default class AppContainer extends Component {
 
   constructor (props) {
     super(props);
-    this.state = Object.assign({}, initialState, store.getState().player);
+    const storeState = store.getState();
+    this.state = Object.assign({}, initialState, storeState.player, storeState.albums);
 
     this.toggle = this.toggle.bind(this);
     this.toggleOne = this.toggleOne.bind(this);
@@ -36,7 +38,6 @@ export default class AppContainer extends Component {
 
     Promise
       .all([
-        axios.get('/api/albums/'),
         axios.get('/api/artists/'),
         axios.get('/api/playlists')
       ])
@@ -48,8 +49,11 @@ export default class AppContainer extends Component {
     AUDIO.addEventListener('timeupdate', () =>
       this.setProgress(AUDIO.currentTime / AUDIO.duration));
 
+    store.dispatch(fetchAlbums());
+
     this.unsubsribe = store.subscribe(() => {
-      this.setState(store.getState().player);
+      const storeState = store.getState();
+      this.setState(Object.assign({}, storeState.player, storeState.albums));
     });
   }
 
@@ -57,9 +61,8 @@ export default class AppContainer extends Component {
     this.unsubsribe();
   }
 
-  onLoad (albums, artists, playlists) {
+  onLoad (artists, playlists) {
     this.setState({
-      albums: convertAlbums(albums),
       artists: artists,
       playlists: playlists
     });
