@@ -1,6 +1,7 @@
 import React from 'react';
+import axios from 'axios';
 import store from '../redux/store';
-import {setLyrics} from '../redux/actions-creators/lyrics';
+import { setLyrics } from '../redux/actions-creators/lyrics';
 import Lyrics from '../components/Lyrics';
 
 export default class LyricsContainer extends React.Component{
@@ -25,7 +26,9 @@ export default class LyricsContainer extends React.Component{
   }
   handleSubmit(event){
     event.preventDefault();
-    console.log(this.state);
+    axios.get(`/api/lyrics/${this.state.artistQuery}/${this.state.songQuery}`)
+    .then(res => res.data)
+    .then(lyrics => store.dispatch(setLyrics(lyrics.lyric)));
   }
   render(){
     return (
