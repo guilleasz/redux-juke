@@ -7,13 +7,13 @@ import Lyrics from '../components/Lyrics';
 export default class LyricsContainer extends React.Component{
   constructor(){
     super();
-    this.state = Object.assign({}, store.getState(), {artistQuery: '', songQuery: ''});
+    this.state = Object.assign({}, store.getState().lyrics, {artistQuery: '', songQuery: ''});
     this.setSong = this.setSong.bind(this);
     this.setArtist = this.setArtist.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
   componentDidMount(){
-    this.unsubscribe = store.subscribe(() => this.setState(store.getState()));
+    this.unsubscribe = store.subscribe(() => this.setState(store.getState().lyrics));
   }
   componentWillUnmount(){
     this.unsubscribe();
