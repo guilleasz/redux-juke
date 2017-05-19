@@ -3,7 +3,7 @@ import axios from 'axios';
 import { hashHistory } from 'react-router';
 
 import store from '../redux/store'
-import { playAudio } from '../redux/actions-creators/player';
+import { playAudio, loadSongs } from '../redux/actions-creators/player';
 import initialState from '../initialState';
 import AUDIO from '../audio';
 import Albums from '../components/Albums.js';
@@ -76,12 +76,7 @@ export default class AppContainer extends Component {
   }
 
   load (currentSong, currentSongList) {
-    AUDIO.src = currentSong.audioUrl;
-    AUDIO.load();
-    this.setState({
-      currentSong: currentSong,
-      currentSongList: currentSongList
-    });
+    store.dispatch(loadSongs(currentSong, currentSongList));
   }
 
   startSong (song, list) {
